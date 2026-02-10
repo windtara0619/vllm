@@ -14,6 +14,13 @@ Usage:
     python kernelsage/demo.py
 """
 
+import sys
+from pathlib import Path
+
+# Add the repo root to sys.path so "kernelsage" is importable regardless of
+# where the script is invoked from.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from kernelsage import KernelSageModel
 
 # Step 1: Register KernelSageModel under the "GptOssForCausalLM" architecture.
