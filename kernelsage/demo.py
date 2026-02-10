@@ -7,13 +7,13 @@ This script demonstrates how to:
 2. Instantiate vLLM's LLM engine with the registered model and generate text.
 
 Usage:
-    python -m vllm.kernelsage.demo
+    python -m kernelsage.demo
 """
 
 from vllm import LLM
 from vllm.model_executor.models import ModelRegistry
 
-from vllm.kernelsage import KernelSageModel
+from kernelsage import KernelSageModel
 
 # Step 1: Register KernelSageModel under the "GptOssForCausalLM" architecture.
 # When vLLM loads a model whose HuggingFace config reports
