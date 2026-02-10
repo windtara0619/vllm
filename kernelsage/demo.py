@@ -6,21 +6,30 @@ This script demonstrates how to:
    architecture name so vLLM uses it instead of the built-in implementation.
 2. Instantiate vLLM's LLM engine with the registered model and generate text.
 
-Usage:
-    python -m kernelsage.demo
-"""
+Requirements:
+    - vLLM installed with CUDA support (GPU machine)
+    - pip install vllm
 
-from vllm import LLM
-from vllm.model_executor.models import ModelRegistry
+Usage:
+    python kernelsage/demo.py
+"""
 
 from kernelsage import KernelSageModel
 
 # Step 1: Register KernelSageModel under the "GptOssForCausalLM" architecture.
 # When vLLM loads a model whose HuggingFace config reports
 # architectures=["GptOssForCausalLM"], it will now use KernelSageModel.
+from vllm.model_executor.models.registry import ModelRegistry
+
 ModelRegistry.register_model("GptOssForCausalLM", KernelSageModel)
 
+# Verify the registration worked.
+print("Registration successful:",
+      "GptOssForCausalLM" in ModelRegistry.get_supported_archs())
+
 # Step 2: Create the vLLM engine pointing at the model on HuggingFace Hub.
+from vllm import LLM
+
 llm = LLM("openai/gpt-oss-20b")
 
 # Step 3: Run a sample generation.
