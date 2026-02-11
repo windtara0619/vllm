@@ -24,7 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from kernelsage import KernelSageModel
-from kernelsage.triton_attn import KernelSageAttentionBackend
+from kernelsage.kernelsage_attn import KernelSageAttentionBackend
 
 
 def main():
@@ -60,7 +60,7 @@ def main():
     # Step 3: Register KernelSageAttentionBackend as the CUSTOM backend.
     # ------------------------------------------------------------------
     register_backend(AttentionBackendEnum.CUSTOM,
-                     "kernelsage.triton_attn.KernelSageAttentionBackend")
+                     "kernelsage.kernelsage_attn.KernelSageAttentionBackend")
     print("Attention backend registered:",
           AttentionBackendEnum.CUSTOM.is_overridden())
 
