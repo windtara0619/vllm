@@ -23,23 +23,32 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from kernelsage import KernelSageModel
 
-# Step 1: Register KernelSageModel under the "GptOssForCausalLM" architecture.
-# When vLLM loads a model whose HuggingFace config reports
-# architectures=["GptOssForCausalLM"], it will now use KernelSageModel.
-from vllm.model_executor.models.registry import ModelRegistry
 
-ModelRegistry.register_model("GptOssForCausalLM", KernelSageModel)
+def main():
+    # Step 1: Register KernelSageModel under the "GptOssForCausalLM" architecture.
+    # When vLLM loads a model whose HuggingFace config reports
+    # architectures=["GptOssForCausalLM"], it will now use KernelSageModel.
+    from vllm.model_executor.models.registry import ModelRegistry
 
-# Verify the registration worked.
-print("Registration successful:",
-      "GptOssForCausalLM" in ModelRegistry.get_supported_archs())
+    ModelRegistry.register_model("GptOssForCausalLM", KernelSageModel)
 
-# Step 2: Create the vLLM engine pointing at the model on HuggingFace Hub.
-from vllm import LLM
+    # Verify the registration worked.
+    print("Registration successful:",
+          "GptOssForCausalLM" in ModelRegistry.get_supported_archs())
 
-llm = LLM("openai/gpt-oss-20b")
+    # Step 2: Create the vLLM engine pointing at the model on HuggingFace Hub.
+    from vllm import LLM
 
-# Step 3: Run a sample generation.
-outputs = llm.generate(["Hello, KernelSage!"])
-for output in outputs:
-    print(output.outputs[0].text)
+    llm = LLM("openai/gpt-oss-20b")
+
+    # Step 3: Run a sample generation.
+    outputs = llm.generate(["Hello, KernelSage!"])
+    for output in outputs:
+        print(output.outputs[0].text)
+
+
+if __name__ == "__main__":
+    # Optional but harmless on Linux; required on Windows/frozen apps.
+    import multiprocessing as mp
+    mp.freeze_support()
+    main()
